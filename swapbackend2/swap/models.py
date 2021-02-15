@@ -9,3 +9,6 @@ class courses(models.Model):
 
 	coursename=models.CharField(max_length=64)
 	courseid=models.CharField(max_length=64)
+
+	def __str__(self):
+		return self.coursename
