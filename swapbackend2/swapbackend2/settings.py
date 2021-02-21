@@ -21,12 +21,12 @@ AUTH_USER_MODEL = 'swap.User'
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%710m*zic)#0u((qugw#1@e^ty!c)9j04956v@ly(_86n$rg)h'
+SECRET_KEY = '^!lgq@01w5=0zp)ge@jlv_kbp)(0u6bn%)&a%@)r-wvja^z)ul'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0","immense-inlet-05074.herokuapp.com","127.0.0.1"]
+ALLOWED_HOSTS = ["0.0.0.0","swapcrux.herokuapp.com","127.0.0.1"]
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
