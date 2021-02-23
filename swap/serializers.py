@@ -15,4 +15,10 @@ class requireSerializer(serializers.ModelSerializer):
     class Meta:
         model = require
         fields = ('id','coursereq','coursegiv','user')
+    def to_representation(self, instance):
+        rep = super(requireSerializer, self).to_representation(instance)
+        rep['coursereq'] = instance.coursereq.courseid
+        rep['coursegiv'] = instance.coursegiv.courseid
+        return rep
+    
         
