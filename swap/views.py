@@ -45,15 +45,15 @@ class RequireViewSet(viewsets.ModelViewSet):
         coursereq=serializer.data['coursereq']
         coursegiv=serializer.data['coursegiv']
         user=serializer.data['user']
-        if require.objects.filter(coursereq__id=coursegiv,coursegiv__id=coursereq).exists():
-            user2=require.objects.filter(coursereq__id=coursegiv,coursegiv__id=coursereq).first().user
-            require.objects.filter(coursereq__id=coursegiv,coursegiv__id=coursereq).first().delete()
-            require.objects.filter(coursereq__id=coursereq,coursegiv__id=coursegiv,user__id=user).delete()
+        if require.objects.filter(coursereq__courseid=coursegiv,coursegiv__courseid=coursereq).exists():
+            user2=require.objects.filter(coursereq__courseid=coursegiv,coursegiv__courseid=coursereq).first().user
+            require.objects.filter(coursereq__courseid=coursegiv,coursegiv__courseid=coursereq).first().delete()
+            require.objects.filter(coursereq__courseid=coursereq,coursegiv__courseid=coursegiv,user__id=user).delete()
             user = User.objects.get(id=user)
-            user.course.remove(courses.objects.get(id=coursegiv))
-            user2.course.remove(courses.objects.get(id=coursereq))
-            user2.course.add(courses.objects.get(id=coursegiv))
-            user.course.add(courses.objects.get(id=coursereq))
+            user.course.remove(courses.objects.get(courseid=coursegiv))
+            user2.course.remove(courses.objects.get(courseid=coursereq))
+            user2.course.add(courses.objects.get(courseid=coursegiv))
+            user.course.add(courses.objects.get(courseid=coursereq))
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 #there has to be something written here to notify both the users            
