@@ -28,7 +28,7 @@ class CoursesViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'head','delete']
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('id')
+    queryset = User.objects.all().order_by('userid')
     serializer_class = UserSerializer
     http_method_names = ['get', 'post', 'head','delete']
         
