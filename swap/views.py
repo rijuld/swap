@@ -8,10 +8,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
-""" from google.oauth2 import id_token
-from google.auth.transport import requests """
-
+def verifyauth(idtoken):
+    try:
+        idinfo = id_token.verify_oauth2_token(idtoken, requests.Request(), "676954385087-tp09jf7ave2790d930uam9m4ke3dvdqs.apps.googleusercontent.com")
+        """ if idinfo['hd'] != "bits-pilani.ac.in":
+            raise ValueError('Wrong hosted domain.') """
+        userid = idinfo['sub']
+        return userid
+    except ValueError:
+        # Invalid token
+        pass
 class CoursesViewSet(viewsets.ModelViewSet):
     
     queryset = courses.objects.all().order_by('coursename')
@@ -22,6 +31,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
     http_method_names = ['get', 'post', 'head','delete']
+        
 
 class RequireViewSet(viewsets.ModelViewSet):
     queryset = require.objects.all().order_by('id')

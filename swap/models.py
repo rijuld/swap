@@ -12,11 +12,11 @@ class courses(models.Model):
 		return self.coursename
 class User(AbstractUser):
 	phone_number = models.CharField(max_length=12)
-	usersname = models.CharField(max_length=64)
-	course = models.ManyToManyField(courses)
+	userid = models.CharField(max_length=255 ,primary_key = True)
+	course = models.ManyToManyField(courses,blank=True)
 	pass
 	def __str__(self):
-		return self.username
+		return self.userid
 class require(models.Model):
 	user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="user")
 	coursereq=models.ForeignKey(courses,on_delete=models.CASCADE,related_name="coursereq")
