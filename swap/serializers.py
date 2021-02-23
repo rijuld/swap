@@ -5,16 +5,12 @@ class CoursesSerializer(serializers.ModelSerializer):
     class Meta:
         model = courses
         fields = ('id','coursename', 'courseid')
-        extra_kwargs = {
-            'url': {'lookup_field': 'c'}
-        }
 #visit the endpoint via GET 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id','phone_number','userid','course')
-        
 class requireSerializer(serializers.ModelSerializer):
     class Meta:
         model = require

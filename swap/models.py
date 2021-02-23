@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class courses(models.Model):
 	
 	coursename=models.CharField(max_length=64)
-	courseid=models.CharField(max_length=64, primary_key = True)
+	courseid=models.CharField(max_length=64)
 	def __str__(self):
 		return self.coursename
 
