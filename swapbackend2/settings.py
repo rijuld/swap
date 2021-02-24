@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["0.0.0.0","swapcrux.herokuapp.com","127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
+    "fcm_django",
     'rest_framework',
     'swap',
     'django.contrib.admin',
@@ -43,6 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": "AAAAEbDI0Qs:APA91bGT3Ph4SHAqFoYlEpxgUBNa322UTxFR3n3FJwjBLytnhaTxxXHLN1mRMNFbC_aR6ut3SOdyWALSjynZ0DORaD7T18D5PTON09y6f5J386FjN3pKmZ2Dnd-hsWc3liHNj_8DHM36"
+}
 
 ALLOWED_HOSTS = ["0.0.0.0","swapcrux.herokuapp.com","127.0.0.1"]
 MIDDLEWARE = [

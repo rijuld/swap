@@ -17,6 +17,7 @@ class NewUser(models.Model):
 	phone_number = models.CharField(max_length=15)
 	userid = models.CharField(max_length=255 ,primary_key = True)
 	course = models.ManyToManyField(courses,blank=True)
+	cloudToken=models.CharField(max_length=2500)
 	def __str__(self):
 		return self.userid
 

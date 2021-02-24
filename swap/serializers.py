@@ -10,7 +10,7 @@ class CoursesSerializer(serializers.ModelSerializer):
 class NewUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewUser
-        fields = ('phone_number','userid')
+        fields = ('phone_number','userid','cloudToken')
 
 class authtokSerializer(serializers.ModelSerializer):
     class Meta:
