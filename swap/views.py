@@ -38,7 +38,8 @@ class NewUserViewSet(viewsets.ModelViewSet):
         userid=verifyauth(idToken)
         k=NewUser(userid=userid, phone_number=phonenumber)
         k.save()
-        return Response(userid)
+        headers = self.get_success_headers(userid)
+        return Response(userid, status=status.HTTP_201_CREATED, headers=headers)
     
 
 class RequireViewSet(viewsets.ModelViewSet):
@@ -56,8 +57,8 @@ class RequireViewSet(viewsets.ModelViewSet):
         if require.objects.filter(coursereq__courseid=coursegiv,coursegiv__courseid=coursereq).exists():
             user2=require.objects.filter(coursereq__courseid=coursegiv,coursegiv__courseid=coursereq).first().user
             require.objects.filter(coursereq__courseid=coursegiv,coursegiv__courseid=coursereq).first().delete()
-            require.objects.filter(coursereq__courseid=coursereq,coursegiv__courseid=coursegiv,user__id=user).delete()
-            user = NewUser.objects.get(id=user)
+            require.objects.filter(coursereq__courseid=coursereq,coursegiv__courseid=coursegiv,user__userid=user).delete()
+            user = NewUser.objects.get(userid=user)
             user.course.remove(courses.objects.get(courseid=coursegiv))
             user2.course.remove(courses.objects.get(courseid=coursereq))
             user2.course.add(courses.objects.get(courseid=coursegiv))
@@ -72,10 +73,9 @@ class Test(APIView):
         idToken = request.data['idToken']
         phonenumber = request.data['phone_number']
         userid=verifyauth(idToken)
-        k=NewUser(userid=userid, phone_number=phonenumber)
+        k=User(userid=userid, phone_number=phonenumber)
         k.save()
-        headers = self.get_success_headers(userid)
-        return Response(userid, status=status.HTTP_201_CREATED, headers=headers)
+        return Response("hello")
 """ try:
     CLIENT_ID="676954385087-tp09jf7ave2790d930uam9m4ke3dvdqs.apps.googleusercontent.com"
     # Specify the CLIENT_ID of the app that accesses the backend:
