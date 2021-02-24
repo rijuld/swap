@@ -26,5 +26,5 @@ class require(models.Model):
 	coursegiv=models.ForeignKey(courses,on_delete=models.CASCADE,related_name="coursegiv")
 	
 class authtok(models.Model):
-	idToken=models.CharField(max_length=255)
+	idToken=models.CharField(max_length=2500)
 	phone_number= models.CharField(max_length=255)

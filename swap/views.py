@@ -34,8 +34,8 @@ class authtokViewSet(viewsets.ModelViewSet):
         phone_number=serializer.data['phone_number']
         idToken=serializer.data['idToken']
         userid=verifyauth(idToken)
+        k=NewUser(userid=userid, phone_number=phone_number)
         k.save()
-        k=NewUser(userid=userid, phone_number=phonenumber)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
