@@ -33,8 +33,10 @@ class NewUserViewSet(viewsets.ModelViewSet):
     serializer_class = NewUserSerializer
     http_method_names = ['get', 'post', 'head','delete']
     def create(self, request, *args, **kwargs):
-        idToken = request.data['idToken']
-        phonenumber = request.data['phone_number']
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        idToken = serializer.data['idToken']
+        phonenumber = serializer.data['phone_number']
         userid=verifyauth(idToken)
         k=NewUser(userid=userid, phone_number=phonenumber)
         k.save()
