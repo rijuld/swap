@@ -10,13 +10,14 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from google.oauth2 import id_token
 from google.auth.transport import requests
+from rest_framework.views import APIView
 
 def verifyauth(idtoken):
     try:
-        idinfo = id_token.verify_oauth2_token(idtoken, requests.Request(), "676954385087-tp09jf7ave2790d930uam9m4ke3dvdqs.apps.googleusercontent.com")
-        """ if idinfo['hd'] != "bits-pilani.ac.in":
-            raise ValueError('Wrong hosted domain.') """
-        userid = idinfo['sub']
+        idinfo = id_token.verify_oauth2_token(idtoken, requests.Request(), "75980394763-bj0hr3nhh40qk6qaoeh6ddi4p0svhfa0.apps.googleusercontent.com")
+        """ if idinfo['hd'] != "hyderabad.bits-pilani.ac.in":
+            raise ValueError('Wrong hosted domain.')  """
+        userid = idinfo['email']
         return userid
     except ValueError:
         # Invalid token
@@ -28,16 +29,23 @@ class CoursesViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'head','delete']
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('userid')
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     http_method_names = ['get', 'post', 'head','delete']
-        
+    def create(self, request, *args, **kwargs):
+        idToken = request.data['idToken']
+        phonenumber = request.data['phone_number']
+        userid=verifyauth(idToken)
+        k=User(userid=userid, phone_number=phonenumber)
+        k.save()
+        return Response(userid)
+    
 
 class RequireViewSet(viewsets.ModelViewSet):
     queryset = require.objects.all().order_by('id')
     serializer_class = requireSerializer
     http_method_names = ['get', 'post', 'head','delete']
- 
+    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -59,7 +67,14 @@ class RequireViewSet(viewsets.ModelViewSet):
 #there has to be something written here to notify both the users            
 # (Receive token by HTTPS POST) 
 # ...
-
+class Test(APIView):
+    def post(self, request):
+        idToken = request.data['idToken']
+        phonenumber = request.data['phone_number']
+        userid=verifyauth(idToken)
+        k=User(userid=userid, phone_number=phonenumber)
+        k.save()
+        return Response("hello")
 """ try:
     CLIENT_ID="676954385087-tp09jf7ave2790d930uam9m4ke3dvdqs.apps.googleusercontent.com"
     # Specify the CLIENT_ID of the app that accesses the backend:
