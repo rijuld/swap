@@ -15,7 +15,7 @@ class NewUserSerializer(serializers.ModelSerializer):
 class authtokSerializer(serializers.ModelSerializer):
     class Meta:
         model = authtok
-        fields = ('phone_number','idToken')
+        fields = ('phone_number','idToken','cloudToken')
 
 class requireSerializer(serializers.ModelSerializer):
     class Meta:
