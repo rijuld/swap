@@ -1,8 +1,8 @@
 # views.py
 from rest_framework import viewsets
 
-from .serializers import CoursesSerializer,UserSerializer,requireSerializer
-from .models import courses,User,require
+from .serializers import CoursesSerializer,NewUserSerializer,requireSerializer
+from .models import courses,NewUser,require
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -28,15 +28,15 @@ class CoursesViewSet(viewsets.ModelViewSet):
     serializer_class = CoursesSerializer
     http_method_names = ['get', 'post', 'head','delete']
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class NewUserViewSet(viewsets.ModelViewSet):
+    queryset = NewUser.objects.all()
+    serializer_class = NewUserSerializer
     http_method_names = ['get', 'post', 'head','delete']
     def create(self, request, *args, **kwargs):
         idToken = request.data['idToken']
         phonenumber = request.data['phone_number']
         userid=verifyauth(idToken)
-        k=User(userid=userid, phone_number=phonenumber)
+        k=NewUser(userid=userid, phone_number=phonenumber)
         k.save()
         return Response(userid)
     
@@ -57,7 +57,7 @@ class RequireViewSet(viewsets.ModelViewSet):
             user2=require.objects.filter(coursereq__courseid=coursegiv,coursegiv__courseid=coursereq).first().user
             require.objects.filter(coursereq__courseid=coursegiv,coursegiv__courseid=coursereq).first().delete()
             require.objects.filter(coursereq__courseid=coursereq,coursegiv__courseid=coursegiv,user__id=user).delete()
-            user = User.objects.get(id=user)
+            user = NewUser.objects.get(id=user)
             user.course.remove(courses.objects.get(courseid=coursegiv))
             user2.course.remove(courses.objects.get(courseid=coursereq))
             user2.course.add(courses.objects.get(courseid=coursegiv))
@@ -72,9 +72,10 @@ class Test(APIView):
         idToken = request.data['idToken']
         phonenumber = request.data['phone_number']
         userid=verifyauth(idToken)
-        k=User(userid=userid, phone_number=phonenumber)
+        k=NewUser(userid=userid, phone_number=phonenumber)
         k.save()
-        return Response("hello")
+        headers = self.get_success_headers(userid)
+        return Response(userid, status=status.HTTP_201_CREATED, headers=headers)
 """ try:
     CLIENT_ID="676954385087-tp09jf7ave2790d930uam9m4ke3dvdqs.apps.googleusercontent.com"
     # Specify the CLIENT_ID of the app that accesses the backend:

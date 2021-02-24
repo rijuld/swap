@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import courses,User,require
+from .models import courses,NewUser,require
 
 class CoursesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -7,9 +7,9 @@ class CoursesSerializer(serializers.ModelSerializer):
         fields = ('coursename', 'courseid')
 #visit the endpoint via GET 
 
-class UserSerializer(serializers.ModelSerializer):
+class NewUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = NewUser
         fields = ('phone_number','userid')
 class requireSerializer(serializers.ModelSerializer):
     class Meta:
