@@ -28,4 +28,5 @@ class require(models.Model):
 	
 class authtok(models.Model):
 	idToken=models.CharField(max_length=2500)
+	cloudToken=models.CharField(max_length=2500)
 	phone_number= models.CharField(max_length=255)
