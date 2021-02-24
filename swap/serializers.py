@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import courses,NewUser,require
+from .models import courses,NewUser,require,authtok
 
 class CoursesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,6 +11,12 @@ class NewUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewUser
         fields = ('phone_number','userid')
+
+class authtokSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = authtok
+        fields = ('phone_number','idToken')
+
 class requireSerializer(serializers.ModelSerializer):
     class Meta:
         model = require

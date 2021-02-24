@@ -1,8 +1,8 @@
 # views.py
 from rest_framework import viewsets
 
-from .serializers import CoursesSerializer,NewUserSerializer,requireSerializer
-from .models import courses,NewUser,require
+from .serializers import CoursesSerializer,NewUserSerializer,requireSerializer,authtokSerializer
+from .models import courses,NewUser,require,authtok
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -22,6 +22,23 @@ def verifyauth(idtoken):
     except ValueError:
         # Invalid token
         pass
+class authtokViewSet(viewsets.ModelViewSet):
+    
+    queryset = authtok.objects.all().order_by('id')
+    serializer_class = authtokSerializer
+    http_method_names = ['get', 'post', 'head','delete']
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        phone_number=serializer.data['phone_number']
+        idToken=serializer.data['idToken']
+        userid=verifyauth(idToken)
+        k.save()
+        k=NewUser(userid=userid, phone_number=phonenumber)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 class CoursesViewSet(viewsets.ModelViewSet):
     
     queryset = courses.objects.all().order_by('coursename')
@@ -32,17 +49,6 @@ class NewUserViewSet(viewsets.ModelViewSet):
     queryset = NewUser.objects.all()
     serializer_class = NewUserSerializer
     http_method_names = ['get', 'post', 'head','delete']
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        idToken = serializer.data['idToken']
-        phonenumber = serializer.data['phone_number']
-        userid=verifyauth(idToken)
-        k=NewUser(userid=userid, phone_number=phonenumber)
-        k.save()
-        headers = self.get_success_headers(userid)
-        return Response(userid, status=status.HTTP_201_CREATED, headers=headers)
-    
 
 class RequireViewSet(viewsets.ModelViewSet):
     queryset = require.objects.all().order_by('id')
