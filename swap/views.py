@@ -15,10 +15,11 @@ import firebase_admin
 from firebase_admin import credentials
 from fcm_django.models import FCMDevice
 from firebase_admin import messaging
+from swapbackend2 import settings
+from swapbackend2.settings import SWAPFOLDER
 
-default_app = firebase_admin.initialize_app()
 if not firebase_admin._apps:
-	cred = credentials.Certificate("swap/swap-4ec4c-firebase-adminsdk-zlcs2-ca127b19a2.json")
+	cred = credentials.Certificate(SWAPFOLDER+"swapbackend2/a.json")
 	firebase_admin.initialize_app(cred)
 
 def verifyauth(idtoken):
@@ -31,9 +32,6 @@ def verifyauth(idtoken):
 	except ValueError:
 		# Invalid token
 		pass
-
-
-	
 
 def send_multicast(u1,u2):
 	token1=u1.cloudToken
