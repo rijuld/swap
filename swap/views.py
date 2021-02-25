@@ -25,8 +25,8 @@ if not firebase_admin._apps:
 def verifyauth(idtoken):
 	try:
 		idinfo = id_token.verify_oauth2_token(idtoken, requests.Request(), "75980394763-bj0hr3nhh40qk6qaoeh6ddi4p0svhfa0.apps.googleusercontent.com")
-		""" if idinfo['hd'] != "hyderabad.bits-pilani.ac.in":
-			raise ValueError('Wrong hosted domain.')  """
+		if idinfo['hd'] != "hyderabad.bits-pilani.ac.in":
+			raise ValueError('Wrong hosted domain.')  
 		userid = idinfo['email']
 		return userid
 	except ValueError:
@@ -42,6 +42,10 @@ def send_multicast(u1,u2):
 	message = messaging.MulticastMessage(
 		data={'uid1': u1.userid, 'uid2': u2.userid,'phno1': phno1,'phno2': phno2},
 		tokens=registration_tokens,
+		notification=messaging.Notification(
+        title='Hurray course matched',
+        body=' email 1 '+u1.userid+'phoneno 1'+' email 2'+u2.userid+' phno1: '+phno1+' phno2: '+phno2,
+    )
 	)
 	response = messaging.send_multicast(message)
 	print('{0} messages were sent successfully hurray'.format(response.success_count))
